@@ -86,7 +86,7 @@ def getTrackFormWeight(originalID):
 
 	toret["FormWeight"] = {}
 	for itemDB in trackDatabases:
-		trackSqlConnexion = "DRIVER={SQL Server};Server=CASIMIR;Database=" + itemDB + ";UID=FormBuilderUser;PWD=fbuser42;"
+		trackSqlConnexion = "DRIVER={SQL Server};Server=TRACK\\CORE;Database=" + itemDB + ";UID=FormBuilderUser;PWD=fbuser42;"
 		trackSqlConnexion = urllib.parse.quote_plus(trackSqlConnexion)
 		trackSqlConnexion = "mssql+pyodbc:///?odbc_connect=%s" % trackSqlConnexion
 
@@ -114,7 +114,7 @@ def getTrackInputWeight(originalID):
 
 	toret["InputWeight"] = {}
 	for itemDB in trackDatabases:
-		trackSqlConnexion = "DRIVER={SQL Server};Server=CASIMIR;Database=" + itemDB + ";UID=FormBuilderUser;PWD=fbuser42;"
+		trackSqlConnexion = "DRIVER={SQL Server};Server=TRACK\\CORE;Database=" + itemDB + ";UID=FormBuilderUser;PWD=fbuser42;"
 		trackSqlConnexion = urllib.parse.quote_plus(trackSqlConnexion)
 		trackSqlConnexion = "mssql+pyodbc:///?odbc_connect=%s" % trackSqlConnexion
 
