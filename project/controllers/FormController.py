@@ -55,6 +55,7 @@ def get_forms():
 def getFormByID(formID):
     if (formID.isdigit()):
         findForm = session.query(Form).get(formID)
+        print ("returning recuriseToJSON ==========>", str(findForm.recuriseToJSON()))
         return jsonify({ "form" : findForm.recuriseToJSON() })
     else:
         forms = []
@@ -79,6 +80,7 @@ def getFormByID(formID):
                     k = keyword.toJSON()
                     forms[current_form_index]['keywordsFr' if k['lng'] == 'FR' else 'keywordsEn'].append(k)
                     keywords_added.append(keyword.pk_KeyWord_Form)
+        print ("returning ==========>", str(forms))
         return json.dumps(forms, ensure_ascii=False)
 
 # Create form
@@ -285,6 +287,10 @@ def updateForm(id):
 
                             inputsList = request.json['schema'][eachInput]
 
+                            savedConverted = request.json['schema'][eachInput]['converted']
+                            if request.json['schema'][eachInput]['converted'] != None:
+                                del request.json['schema'][eachInput]['converted']
+
                             form.addInput( inputRepository.createInput(**inputsList) )
 
                             foundInputs = session.query(Input).filter_by(name = inputsList['name']).all()
@@ -292,9 +298,9 @@ def updateForm(id):
                             for foundInput in foundInputs:
                                 foundForm = session.query(Form).filter_by(pk_Form = foundInput.fk_form).first()
                                 if foundForm.context == form.context and foundInput.type != inputsList['type']:
-                                    abort(make_response('customerror::modal.save.inputnamehasothertype::' + str(foundInput.name) + ' = ' + str(foundInput.type), 400))
-                        
-
+                                    if savedConverted == None or foundInput.pk_Input != savedConverted:#TODO REACTIVATE or len(foundInputs) > 1:
+                                        abort(make_response('customerror::modal.save.inputnamehasothertype::' + str(foundInput.name) + ' = ' + str(foundInput.type), 400))
+                                    
                     if len(presentInputs) > 0:
                         # We need to remove some input
                         inputRepository   = InputRepository(None)
@@ -362,25 +368,49 @@ def updateForm(id):
 def removeForm(id):
     form = session.query(Form).filter_by(pk_Form = id).first()
 
+    if form.context != 'track':
+        return jsonify({})
+
     try:
-        session.delete(form)
-        session.commit()
-        return jsonify({"deleted" : True})
+        #session.delete(form)
+        print("yo")
     except:
         session.rollback()
         abort(make_response('Error during delete', 500))
+    finally:
+        session.commit()
+        try: 
+            if form.context == 'track':
+                exec_removeFormBuilderTrack(form.pk_Form)
+        except Exception as e: 
+            print_exc()
+            pass
+        session.commit()
+    return jsonify({"deleted" : True})
 
-@app.route('/forms/<string:context>/<int:id>', methods=['DELETE'])
-def removeFormInContext(context, id):
-    form = session.query(Form).filter_by(pk_Form = id).first()
+@app.route('/forms/<string:zecontext>/<int:id>', methods=['DELETE'])
+def removeFormInContext(zecontext, id):
+    form = session.query(Form).filter_by(pk_Form = id, context = zecontext).first()
+
+    if form.context != 'track':
+        return jsonify({})
 
     try:
-        session.delete(form)
-        session.commit()
-        return jsonify({"deleted" : True})
+        #session.delete(form)
+        print("yo")
     except:
         session.rollback()
         abort(make_response('Error during delete', 500))
+    finally:
+        session.commit()
+        try: 
+            if form.context == 'track':
+                exec_removeFormBuilderTrack(form.pk_Form)
+        except Exception as e: 
+            print_exc()
+            pass
+        session.commit()
+    return jsonify({"deleted" : True})
 
 @app.route('/forms/<int:formid>/field/<int:inputid>', methods=['DELETE'])
 def deleteInputFromForm(formid, inputid):
@@ -480,6 +510,22 @@ def getAllInputNames(context):
     return json.dumps(toret, ensure_ascii=False)
 
 
+@app.route('/makeObsolete/<int:formID>', methods = ['PUT'])
+def makeFormObsolete(formID):
+    
+    myForm = session.query(Form).filter_by(pk_Form = formID).first()
+    myForm.obsolete = True
+
+    try:
+        session.add(myForm)
+    except:
+        session.rollback()
+        abort(make_response('Error during delete', 500))
+    finally:
+        session.commit()
+
+    return json.dumps({"success":True}, ensure_ascii=False)
+
 def exec_exportFormBuilderEcoreleve(formid):
     stmt = text(""" EXEC  """+dbConfig['ecoreleve']+ """.[pr_ExportFormBuilder];
         EXEC  """+dbConfig['ecoreleve']+ """.[pr_ImportFormBuilderOneProtocol] :formid ;
@@ -493,8 +539,22 @@ def exec_exportFormBuilderEcoreleve(formid):
 
 def exec_exportFormBuilderTrack(formid):
 
-    stmt = text("""SET NOCOUNT ON; EXEC """+dbConfig['track']+""".[SendDataToTrackReferential] :formToUpdate;
-        """).bindparams(bindparam('formToUpdate', formid))
+    #stmt = text("""SET NOCOUNT ON; EXEC """+dbConfig['track']+""".[SendDataToTrackReferential] :formToUpdate;
+    #    """).bindparams(bindparam('formToUpdate', formid))
+
+    #curSession = session()
+    #curSession.execute(stmt.execution_options(autocommit=True))
+
+    #curSession.commit()
+
+    return
+
+def exec_removeFormBuilderTrack(formid):
+
+    myForm = session.query(Form).filter_by(pk_Form = formid).first()
+
+    stmt = text("""SET NOCOUNT ON; EXEC """+dbConfig['track']+""".[RemoveFormOnTrackReferential] :formToDelete;
+        """).bindparams(bindparam('formToDelete', myForm.originalID))
 
     curSession = session()
     curSession.execute(stmt.execution_options(autocommit=True))

@@ -28,7 +28,7 @@ class Form(Base):
     obsolete                = Column(Boolean, nullable=False)
     isTemplate              = Column(Boolean, nullable=False)
     context                 = Column(String(50, 'French_CI_AS'), nullable=False)
-    originalID              = Column(BigInteger, nullable=True)
+    originalID              = Column(Integer, nullable=True)
     propagate               = Column(Boolean, nullable=False)
 
     # Relationship
@@ -95,6 +95,7 @@ class Form(Base):
         Return form as json without relationship
         :return: form as json without relationship
         """
+        
         return {
             "id"                       : self.pk_Form,
             "name"                     : self.name,
