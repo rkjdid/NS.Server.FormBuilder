@@ -79,7 +79,6 @@ def getFormByID(formID):
                     k = keyword.toJSON()
                     forms[current_form_index]['keywordsFr' if k['lng'] == 'FR' else 'keywordsEn'].append(k)
                     keywords_added.append(keyword.pk_KeyWord_Form)
-        print ("returning ==========>", str(forms))
         return json.dumps(forms, ensure_ascii=False)
 
 # Create form
