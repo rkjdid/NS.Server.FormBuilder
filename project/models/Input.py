@@ -2,12 +2,12 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 import datetime
 
 
 # Input Class
-class Input(Base):
+class Input(db.Model):
 
     __tablename__ = "Input"
 
@@ -15,25 +15,25 @@ class Input(Base):
 
     fk_form       = Column(ForeignKey('Form.pk_Form'), nullable=False)
 
-    name          = Column(String(100, 'French_CI_AS'), nullable=False)
-    labelFr       = Column(String(300, 'French_CI_AS'), nullable=False)
-    labelEn       = Column(String(300, 'French_CI_AS'), nullable=False)
+    name          = Column(String(100, 'BINARY'), nullable=False)
+    labelFr       = Column(String(300, 'BINARY'), nullable=False)
+    labelEn       = Column(String(300, 'BINARY'), nullable=False)
     editMode      = Column(Integer, nullable=False)
-    fieldSize     = Column(String(100, 'French_CI_AS'), nullable=False)
+    fieldSize     = Column(String(100, 'BINARY'), nullable=False)
     atBeginingOfLine = Column(Boolean, nullable=False)
     startDate     = Column(DateTime, nullable=False)
     curStatus     = Column(Integer, nullable=False)
     order         = Column(SmallInteger, nullable=True)
-    type          = Column(String(100, 'French_CI_AS'), nullable=False)
-    editorClass   = Column(String(100, 'French_CI_AS'), nullable=True)
-    fieldClassEdit    = Column(String(100, 'French_CI_AS'), nullable=True)
-    fieldClassDisplay    = Column(String(100, 'French_CI_AS'), nullable=True)
+    type          = Column(String(100, 'BINARY'), nullable=False)
+    editorClass   = Column(String(100, 'BINARY'), nullable=True)
+    fieldClassEdit    = Column(String(100, 'BINARY'), nullable=True)
+    fieldClassDisplay    = Column(String(100, 'BINARY'), nullable=True)
     originalID              = Column(BigInteger, nullable=True)
     
     # linked field section
-    linkedFieldTable             = Column(String(100, 'French_CI_AS'), nullable=True)
-    linkedField                  = Column(String(100, 'French_CI_AS'), nullable=True)
-    linkedFieldset               = Column(String(100, 'French_CI_AS'), nullable=True)
+    linkedFieldTable             = Column(String(100, 'BINARY'), nullable=True)
+    linkedField                  = Column(String(100, 'BINARY'), nullable=True)
+    linkedFieldset               = Column(String(100, 'BINARY'), nullable=True)
 
     Form        = relationship('Form')
     Properties  = relationship("InputProperty", cascade="all")

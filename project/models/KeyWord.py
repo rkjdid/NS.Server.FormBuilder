@@ -1,19 +1,19 @@
 # -*- coding: utf8 -*-
 
 from sqlalchemy import *
-from .base import Base
+from .. import db
 import datetime
 
 
 # KeyWord Class
 # A Keyword can be used by many Form
-class KeyWord(Base):
+class KeyWord(db.Model):
 
     __tablename__ = 'KeyWord'
 
     pk_KeyWord       = Column(BigInteger, primary_key=True)
 
-    name             = Column(String(100, 'French_CI_AS'), nullable=False)
+    name             = Column(String(100, 'BINARY'), nullable=False)
     creationDate     = Column(DateTime, nullable=False)
     modificationDate = Column(DateTime, nullable=True)
     curStatus        = Column(Integer, nullable=False)

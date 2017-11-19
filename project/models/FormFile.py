@@ -1,15 +1,15 @@
 
 from sqlalchemy import *
-from .base import Base
+from .. import db
 
 # FormFile Class
-class FormFile(Base):
+class FormFile(db.Model):
     __tablename__   = "FormFile"
 
     Pk_ID           = Column(BigInteger, primary_key=True, nullable=False)
     fk_form         = Column(ForeignKey('Form.pk_Form'), nullable=False)
 
-    name            = Column(String(300, 'French_CI_AS'), nullable=True)
+    name            = Column(String(300, 'BINARY'), nullable=True)
     filedata        = Column(VARBINARY('max'), nullable=False)
 
     # Constructor

@@ -2,12 +2,12 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 import datetime
 
 
 # Form Property
-class FormProperty(Base):
+class FormProperty(db.Model):
 
     __tablename__    = 'FormProperty'
 
@@ -15,10 +15,10 @@ class FormProperty(Base):
 
     fk_Form          = Column(ForeignKey('Form.pk_Form'), nullable=False)
 
-    name             = Column(String(255, 'French_CI_AS'), nullable=False)
-    value            = Column(String(255, 'French_CI_AS'), nullable=False)
+    name             = Column(String(255, 'BINARY'), nullable=False)
+    value            = Column(String(255, 'BINARY'), nullable=False)
     creationDate     = Column(DateTime, nullable=False)
-    valueType        = Column(String(10, 'French_CI_AS'), nullable=False)
+    valueType        = Column(String(10, 'BINARY'), nullable=False)
 
     Form = relationship('Form')
 

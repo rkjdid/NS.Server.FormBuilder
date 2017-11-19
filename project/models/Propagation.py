@@ -1,22 +1,22 @@
 # -*- coding: utf8 -*-
 
 from sqlalchemy import *
-from .base import Base
+from .. import db
 
 # Propagation Class
-class Propagation(Base):
+class Propagation(db.Model):
 
     __tablename__   = "Propagation"
 
     Pk_ID           = Column(BigInteger, primary_key=True, nullable=False)
     FB_ID           = Column(BigInteger, nullable=True)
     Source_ID       = Column(BigInteger, nullable=False)
-    Instance        = Column(String(100, 'French_CI_AS'), nullable=False)   
-    TypeObject      = Column(String(100, 'French_CI_AS'), nullable=False)
+    Instance        = Column(String(100, 'BINARY'), nullable=False)   
+    TypeObject      = Column(String(100, 'BINARY'), nullable=False)
     Priority        = Column(Integer, nullable=False)
     Propagation     = Column(Integer, nullable=False)
     Date_Modif      = Column(DateTime, nullable=True)
-    Comment         = Column(String(500, 'French_CI_AS'), nullable=True)    
+    Comment         = Column(String(500, 'BINARY'), nullable=True)    
 
     def toJSON(self):
         return {

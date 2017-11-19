@@ -3,11 +3,11 @@
 import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 
 
 # Relation between Form and KeyWord
-class KeyWord_Form(Base):
+class KeyWord_Form(db.Model):
 
     __tablename__ = "KeyWord_Form"
 

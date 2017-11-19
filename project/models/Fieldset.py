@@ -2,10 +2,10 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 
 
-class Fieldset(Base):
+class Fieldset(db.Model):
 
     __tablename__ = 'Fieldset'
 
@@ -13,11 +13,11 @@ class Fieldset(Base):
 
     fk_form = Column(ForeignKey('Form.pk_Form'), nullable=False)
 
-    legend = Column(String(255, 'French_CI_AS'), nullable=False)
-    fields = Column(String(255, 'French_CI_AS'), nullable=False)
+    legend = Column(String(255, 'BINARY'), nullable=False)
+    fields = Column(String(255, 'BINARY'), nullable=False)
     multiple = Column(Boolean, nullable=True)
     curStatus = Column(Integer, nullable=False)
-    refid = Column(String(255, 'French_CI_AS'), nullable=False)
+    refid = Column(String(255, 'BINARY'), nullable=False)
     order = Column(SmallInteger, nullable=False)
 
     Form = relationship('Form')

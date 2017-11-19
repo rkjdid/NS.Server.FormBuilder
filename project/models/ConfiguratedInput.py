@@ -2,35 +2,35 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 import datetime
 
 # Configurated input
 # A configurated input cans have one or more property
-class ConfiguratedInput(Base):
+class ConfiguratedInput(db.Model):
 
     __tablename__ = "ConfiguratedInput"
 
     pk_ConfiguratedInput      = Column(BigInteger, primary_key=True)
 
-    name          = Column(String(100, 'French_CI_AS'), nullable=False)
-    labelFr       = Column(String(300, 'French_CI_AS'), nullable=False)
-    labelEn       = Column(String(300, 'French_CI_AS'), nullable=False)
+    name          = Column(String(100, 'BINARY'), nullable=False)
+    labelFr       = Column(String(300, 'BINARY'), nullable=False)
+    labelEn       = Column(String(300, 'BINARY'), nullable=False)
     editMode      = Column(Integer, nullable=False)
-    fieldSize     = Column(String(100, 'French_CI_AS'), nullable=False)
+    fieldSize     = Column(String(100, 'BINARY'), nullable=False)
     atBeginingOfLine = Column(Boolean, nullable=False)
     startDate     = Column(DateTime, nullable=False)
     curStatus     = Column(Integer, nullable=False)
-    type          = Column(String(100, 'French_CI_AS'), nullable=False)
-    editorClass   = Column(String(100, 'French_CI_AS'), nullable=True)
-    fieldClassEdit    = Column(String(100, 'French_CI_AS'), nullable=True)
-    fieldClassDisplay    = Column(String(100, 'French_CI_AS'), nullable=True)
+    type          = Column(String(100, 'BINARY'), nullable=False)
+    editorClass   = Column(String(100, 'BINARY'), nullable=True)
+    fieldClassEdit    = Column(String(100, 'BINARY'), nullable=True)
+    fieldClassDisplay    = Column(String(100, 'BINARY'), nullable=True)
     originalID              = Column(BigInteger, nullable=True)
     
     # linked field section
-    linkedFieldTable             = Column(String(100, 'French_CI_AS'), nullable=True)
-    linkedField                  = Column(String(100, 'French_CI_AS'), nullable=True)
-    linkedFieldset               = Column(String(100, 'French_CI_AS'), nullable=True)
+    linkedFieldTable             = Column(String(100, 'BINARY'), nullable=True)
+    linkedField                  = Column(String(100, 'BINARY'), nullable=True)
+    linkedFieldset               = Column(String(100, 'BINARY'), nullable=True)
 
     Properties  = relationship("ConfiguratedInputProperty", cascade="all")
 

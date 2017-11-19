@@ -1,19 +1,19 @@
 # -*- coding: utf8 -*-
 
 from sqlalchemy import *
-from .base import Base
+from .. import db
 
 
 # Unity Class
-class Unity(Base):
+class Unity(db.Model):
 
     __tablename__ = "Unity"
 
     pk_Unity      = Column(BigInteger, primary_key=True)
-    name          = Column(String(100, 'French_CI_AS'), nullable=False)
-    labelFr       = Column(String(300, 'French_CI_AS'))
-    labelEn       = Column(String(300, 'French_CI_AS'))
-    context       = Column(String(50, 'French_CI_AS'), nullable=False)
+    name          = Column(String(100, 'BINARY'), nullable=False)
+    labelFr       = Column(String(300, 'BINARY'))
+    labelEn       = Column(String(300, 'BINARY'))
+    context       = Column(String(50, 'BINARY'), nullable=False)
     ordre         = Column(Integer, nullable=False)
     
 

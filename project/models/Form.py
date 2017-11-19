@@ -2,7 +2,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 from .KeyWord_Form import KeyWord_Form
 from .KeyWord import KeyWord
 from ..utilities import Utility
@@ -11,23 +11,23 @@ import datetime
 
 import pprint
 
-class Form(Base):
+class Form(db.Model):
     __tablename__ = 'Form'
 
     pk_Form          = Column(BigInteger, primary_key=True)
 
-    name                    = Column(String(100, 'French_CI_AS'), nullable=False, unique=True)
-    tag                     = Column(String(300, 'French_CI_AS'), nullable=True)
-    labelFr                 = Column(String(300, 'French_CI_AS'), nullable=False)
-    labelEn                 = Column(String(300, 'French_CI_AS'), nullable=False)
+    name                    = Column(String(100, 'BINARY'), nullable=False, unique=True)
+    tag                     = Column(String(300, 'BINARY'), nullable=True)
+    labelFr                 = Column(String(300, 'BINARY'), nullable=False)
+    labelEn                 = Column(String(300, 'BINARY'), nullable=False)
     creationDate            = Column(DateTime, nullable=False)
     modificationDate        = Column(DateTime, nullable=True)
     curStatus               = Column(Integer, nullable=False)
-    descriptionFr           = Column(String(300, 'French_CI_AS'), nullable=False)
-    descriptionEn           = Column(String(300, 'French_CI_AS'), nullable=False)
+    descriptionFr           = Column(String(300, 'BINARY'), nullable=False)
+    descriptionEn           = Column(String(300, 'BINARY'), nullable=False)
     obsolete                = Column(Boolean, nullable=False)
     isTemplate              = Column(Boolean, nullable=False)
-    context                 = Column(String(50, 'French_CI_AS'), nullable=False)
+    context                 = Column(String(50, 'BINARY'), nullable=False)
     originalID              = Column(Integer, nullable=True)
     propagate               = Column(Boolean, nullable=False)
 

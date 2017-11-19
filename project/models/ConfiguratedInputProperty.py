@@ -2,12 +2,12 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 import datetime
 
 
 # Configurated input property
-class ConfiguratedInputProperty(Base):
+class ConfiguratedInputProperty(db.Model):
     __tablename__ = 'ConfiguratedInputProperty'
 
     pk_ConfiguratedInputProperty = Column(BigInteger, primary_key=True)
@@ -15,9 +15,9 @@ class ConfiguratedInputProperty(Base):
     fk_ConfiguratedInput         = Column(ForeignKey('ConfiguratedInput.pk_ConfiguratedInput'), nullable=False)
 
     name                         = Column(String(255, ''), nullable=False)
-    value                        = Column(String(5000, 'French_CI_AS'), nullable=False)
+    value                        = Column(String(5000, 'BINARY'), nullable=False)
     creationDate                 = Column(DateTime, nullable=False)
-    valueType                    = Column(String(10, 'French_CI_AS'), nullable=False)
+    valueType                    = Column(String(10, 'BINARY'), nullable=False)
 
     ConfiguratedInput = relationship('ConfiguratedInput')
 

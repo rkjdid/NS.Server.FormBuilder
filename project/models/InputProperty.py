@@ -2,12 +2,12 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from .base import Base
+from .. import db
 import datetime
 
 
 # Input Property
-class InputProperty(Base):
+class InputProperty(db.Model):
 
     __tablename__ = "InputProperty"
 
@@ -15,10 +15,10 @@ class InputProperty(Base):
 
     fk_Input         = Column(ForeignKey('Input.pk_Input'), nullable=False)
 
-    name             = Column(String(255, 'French_CI_AS'), nullable=False)
-    value            = Column(String(5000, 'French_CI_AS'), nullable=False)
+    name             = Column(String(255, 'BINARY'), nullable=False)
+    value            = Column(String(5000, 'BINARY'), nullable=False)
     creationDate     = Column(DateTime, nullable=False)
-    valueType        = Column(String(10, 'French_CI_AS'), nullable=False)
+    valueType        = Column(String(10, 'BINARY'), nullable=False)
 
     Input = relationship('Input')
 
